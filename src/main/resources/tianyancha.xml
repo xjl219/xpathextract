@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<task name="天眼查">
+	<extract><!-- 页面抽取规则 -->
+		<extractor name="HtmlCleaner"
+			class="com.xujl.etl.xpath.extractor.impl.XpathExtractor" isDefault="1" />
+		<page name="企业信息" isPersisted="1" extractor="HtmlCleaner">
+			<url-match-rule type="regex"
+				value="^.*\.tianyancha\.com/company/\d+$" />
+			<model name="企业信息">
+				<field name="target" page="企业信息"
+					xpath=".//*[@id='yearStrTitle'] | .//*[@id='center']" isArray="1">
+					<field name="phone" page="企业信息" parent="target"
+						xpath=".//table[@class='tableList']/tbody/tr[1]/td[2]/text()" />
+					<field name="phone2" page="企业信息" parent="target"
+						xpath=".//table[@class='tableList']/tbody/tr[1]/td[3]/text()" />
+					<field name="zch" page="企业信息" parent="target"
+						xpath=".//table[1]/tbody/tr[1]/td[contains(text(), '注册号')]/span[2]/text()" />
+					<field name="报告" page="企业信息" parent="target"
+						xpath=".//*[@id='yearStrTitleFont']/text()" />
+				</field>
+
+			</model>
+			<model name="企业信息2">
+				<field name="target" page="企业信息2" xpath=".//*[@id='yearStrTitle']"
+					isArray="1">
+					<field name="报告" page="企业信息" parent="target"
+						xpath=".//*[@id='yearStrTitleFont']/text()" />
+				</field>
+
+			</model>
+		</page>
+	</extract>
+</task>
